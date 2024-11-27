@@ -1,0 +1,38 @@
+dashboard:
+  dashboard:
+    image:
+      repository: docker.io/projectsveltos/dashboard
+      tag: v0.42.1
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 5173
+  replicas: 1
+  type: ClusterIP
+kubernetesClusterDomain: cluster.local
+uiBackendManager:
+  manager:
+    args:
+    - --diagnostics-address=:8443
+    - --v=5
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+    image:
+      repository: projectsveltos/ui-backend
+      tag: v0.42.1
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  replicas: 1
+  type: ClusterIP

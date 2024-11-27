@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.backendManager.serviceAccountName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "sveltos-dashboard.backendManagerLabels" . | nindent 4 }}

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.backendManager.service.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "sveltos-dashboard.backendManagerLabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.backendManager.service.type }}
+  ports:
+  - name: http
+    port: {{ .Values.backendManager.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.backendManager.service.targetPort }}
+  selector:
+    {{- include "sveltos-dashboard.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: backend-manager

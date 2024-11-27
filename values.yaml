@@ -1,0 +1,106 @@
+# Default values for sveltos-dashboard.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+backendManager:
+  replicaCount: 1
+  image:
+    repository: projectsveltos/ui-backend
+    tag: main
+    pullPolicy: IfNotPresent
+  serviceAccountName: backend-manager
+  resources:
+    limits:
+      cpu: 500m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  service:
+    name: ui-backend-manager
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: healthz
+      scheme: HTTP
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /readyz
+      port: healthz
+      scheme: HTTP
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+  podSecurityContext:
+    runAsNonRoot: true
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  terminationGracePeriodSeconds: 10
+  nodeSelector:
+    kubernetes.io/os: linux
+  tolerations: []
+  affinity: {}
+
+dashboard:
+  replicaCount: 1
+  image:
+    repository: docker.io/projectsveltos/dashboard
+    tag: ""
+    pullPolicy: IfNotPresent
+  resources: {}
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+  podSecurityContext: {}
+  securityContext: {}
+  terminationGracePeriodSeconds: 10
+  nodeSelector:
+    kubernetes.io/os: linux
+  tolerations: []
+  affinity: {}
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 5173
+  ingress:
+    enabled: false
+    className: ""
+    annotations: []
+    hosts:
+    - host: sveltos.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: sveltos-dashboard-tls
+    #    hosts:
+    #      - sveltos.local
+
+
+
+
+

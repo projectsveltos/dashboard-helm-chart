@@ -72,6 +72,9 @@ spec:
         runAsNonRoot: true
       serviceAccountName: ui-backend-manager
       terminationGracePeriodSeconds: 10
+      nodeSelector: {{- toYaml .Values.uiBackendManager.nodeSelector | nindent 8 }}
+      affinity: {{- toYaml .Values.uiBackendManager.affinity | nindent 8 }}
+      tolerations: {{- toYaml .Values.uiBackendManager.tolerations | nindent 8 }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -101,3 +104,6 @@ spec:
         ports:
         - containerPort: 5173
         resources: {}
+      nodeSelector: {{- toYaml .Values.dashboard.nodeSelector | nindent 8 }}
+      affinity: {{- toYaml .Values.dashboard.affinity | nindent 8 }}
+      tolerations: {{- toYaml .Values.dashboard.tolerations | nindent 8 }}

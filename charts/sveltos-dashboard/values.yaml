@@ -2,7 +2,7 @@ dashboard:
   dashboard:
     image:
       repository: docker.io/projectsveltos/dashboard
-      tag: v0.44.0
+      tag: v0.47.0
   ports:
   - port: 80
     protocol: TCP
@@ -39,11 +39,11 @@ uiBackendManager:
         - ALL
     image:
       repository: projectsveltos/ui-backend
-      tag: v0.44.0
+      tag: v0.47.0
     resources:
       limits:
         cpu: 500m
-        memory: 128Mi
+        memory: 512Mi
       requests:
         cpu: 10m
         memory: 64Mi
